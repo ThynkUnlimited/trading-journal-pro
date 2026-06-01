@@ -1,0 +1,274 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* GLOBAL */
+
+:root {
+
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  min-height: 100%;
+
+  background: #000;
+
+  font-family:
+    Inter,
+    sans-serif;
+
+  -webkit-font-smoothing:
+    antialiased;
+
+  -moz-osx-font-smoothing:
+    grayscale;
+
+  text-rendering:
+    optimizeLegibility;
+}
+
+/* BODY */
+
+body {
+
+  background:
+
+    radial-gradient(
+      circle at top,
+      rgba(249,115,22,0.08),
+      transparent 25%
+    ),
+
+    #000;
+
+  color: white;
+
+  overflow-x: hidden;
+}
+
+/* SCROLLBAR */
+
+::-webkit-scrollbar {
+
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+
+  background: #27272a;
+
+  border-radius: 999px;
+
+  border: 2px solid #09090b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+
+  background: #3f3f46;
+}
+
+/* SELECTION */
+
+::selection {
+
+  background:
+    rgba(122, 117, 114, 0.3);
+
+  color: white;
+}
+
+/* INPUTS */
+
+input,
+select,
+textarea,
+button {
+
+  font: inherit;
+}
+
+/* REMOVE BLUE TAP */
+
+* {
+
+  -webkit-tap-highlight-color:
+    transparent;
+}
+
+/* SMOOTH TRANSITIONS */
+
+button,
+input,
+select,
+textarea,
+a {
+
+  transition:
+    all 0.2s ease;
+}
+/* =========================
+   TRADING CALENDAR
+========================= */
+
+.trading-calendar {
+
+  width: 100%;
+}
+
+.react-calendar {
+
+  width: 100%;
+
+  background: transparent;
+
+  border: none;
+
+  font-family: inherit;
+
+  color: white;
+}
+
+/* NAVIGATION */
+
+.react-calendar__navigation {
+
+  display: flex;
+
+  align-items: center;
+
+  margin-bottom: 18px;
+}
+
+.react-calendar__navigation button {
+
+  color: #a1a1aa;
+
+  background: transparent;
+
+  border: none;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  min-width: 36px;
+
+  border-radius: 10px;
+}
+
+.react-calendar__navigation button:hover {
+
+  background: #18181b;
+}
+
+/* WEEKDAYS */
+
+.react-calendar__month-view__weekdays {
+
+  text-transform: uppercase;
+
+  font-size: 10px;
+
+  letter-spacing: 0.12em;
+
+  color: #71717a;
+
+  margin-bottom: 10px;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+
+  padding: 8px 0;
+}
+
+/* DAYS */
+
+.react-calendar__tile {
+
+  background: transparent;
+
+  color: #d4d4d8;
+
+  border-radius: 12px;
+
+  height: 42px;
+
+  font-size: 12px;
+
+  transition: all 0.2s ease;
+}
+
+.react-calendar__tile:hover {
+
+  background: #18181b;
+}
+
+/* TODAY */
+
+.react-calendar__tile--now {
+
+  background: #18181b !important;
+
+  color: white !important;
+
+  font-weight: 600;
+}
+
+/* ACTIVE TRADE DAYS */
+
+.activeTrade {
+
+  background:
+    rgba(249,115,22,0.18) !important;
+
+  color:
+    #fb923c !important;
+
+  border:
+    1px solid rgba(249,115,22,0.25);
+
+  font-weight: 600;
+}
+
+/* ACTIVE SELECTED */
+
+.react-calendar__tile--active {
+
+  background:
+    rgba(249,115,22,0.25) !important;
+
+  color: white !important;
+}
+
+/* REMOVE UNDERLINES */
+
+abbr {
+
+  text-decoration: none;
+}
+body {
+
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(99,102,241,0.08),
+      transparent 30%
+    ),
+    #000;
+
+  background-attachment: fixed;
+}
