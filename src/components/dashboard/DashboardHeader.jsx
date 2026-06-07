@@ -1,121 +1,159 @@
+import { useEffect, useState } from "react"
+
+import { signOut } from "firebase/auth"
+
 import {
-
-  TrendingUp,
-  BarChart3
-
+  CalendarDays,
+  Clock3
 } from "lucide-react"
+
+import { auth } from "../../firebase/firebase"
+
+import TradeModal from "./TradeModal"
 
 function DashboardHeader() {
 
-  const currentDate =
-    new Date().toLocaleDateString(
-      "en-US",
-      {
+  const [time, setTime] = useState(new Date())
 
-        weekday: "long",
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split("T")[0]
+  )
 
-        month: "long",
+  const [openTradeModal, setOpenTradeModal] = useState(false)
 
-        day: "numeric",
+  useEffect(() => {
 
-        year: "numeric"
-      }
-    )
+    const timer = setInterval(() => {
+
+      setTime(new Date())
+
+    }, 1000)
+
+    return () => clearInterval(timer)
+
+  }, [])
+
+  const handleLogout = async () => {
+
+    try {
+
+      await signOut(auth)
+
+    } catch (error) {
+
+      console.error(error)
+
+    }
+  }
+
+  const currentTime = time.toLocaleTimeString()
 
   return (
 
-    <div className="flex flex-col 2xl:flex-row 2xl:items-center 2xl:justify-between gap-6">
+    <>
 
-      {/* LEFT */}
+      <div className="bg-white border border-gray-200 rounded-2xl px-6 py-5">
 
-      <div>
+        <div className="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-5">
 
-        {/* TOP BADGE */}
+          {/* LEFT */}
 
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20 mb-4">
+          <div>
 
-          <TrendingUp
-            size={14}
-            className="text-orange-400"
-          />
+            <h1 className="text-[22px] font-bold text-gray-900">
 
-          <span className="text-[11px] uppercase tracking-[0.18em] text-orange-400 font-semibold">
+              Trading Dashboard
 
-            Trading Journal Pro
+            </h1>
 
-          </span>
+            <p className="text-[13px] text-gray-500 mt-1">
 
-        </div>
-
-        {/* TITLE */}
-
-        <h1 className="text-3xl font-semibold tracking-tight text-white">
-
-          Performance Dashboard
-
-        </h1>
-
-        {/* SUBTEXT */}
-
-        <p className="text-sm text-zinc-500 mt-2 max-w-2xl leading-relaxed">
-
-          Monitor execution quality, profitability,
-          psychology and long-term trading consistency.
-
-        </p>
-
-      </div>
-
-      {/* RIGHT */}
-
-      <div className="flex items-center gap-4">
-
-        {/* DATE */}
-
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 min-w-[220px]">
-
-          <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-medium mb-2">
-
-            Current Session
-
-          </p>
-
-          <h3 className="text-sm font-semibold text-white">
-
-            {currentDate}
-
-          </h3>
-
-        </div>
-
-        {/* STATUS */}
-
-        <div className="bg-zinc-900/50 border border-zinc-800 rounded-2xl px-5 py-4 min-w-[180px]">
-
-          <div className="flex items-center gap-2 mb-2">
-
-            <BarChart3
-              size={14}
-              className="text-green-400"
-            />
-
-            <p className="text-[11px] uppercase tracking-[0.18em] text-zinc-500 font-medium">
-
-              System Status
+              Monitor your trading performance and analytics
 
             </p>
 
           </div>
 
-          <div className="flex items-center gap-2">
+          {/* CENTER */}
 
-            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+          <div className="flex flex-wrap items-center gap-4">
 
-            <span className="text-sm font-semibold text-green-400">
+            {/* CALENDAR */}
 
-              Analytics Active
+            <div className="flex items-center gap-2 h-10 px-3 rounded-xl border border-gray-200 bg-white">
 
-            </span>
+              <CalendarDays
+                size={15}
+                className="text-gray-500"
+              />
+
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="text-[12px] text-gray-700 outline-none cursor-pointer bg-white w-[140px]"
+              />
+
+            </div>
+
+            {/* CLOCK */}
+
+            <div className="flex items-center gap-2 px-4 h-10 rounded-xl border border-gray-200 bg-gray-50">
+
+              <Clock3
+                size={15}
+                className="text-gray-500"
+              />
+
+              <span className="text-[12px] font-medium text-gray-700">
+
+                {currentTime}
+
+              </span>
+
+            </div>
+
+            {/* FILTER */}
+
+            <select
+              className="h-10 px-4 rounded-xl border border-gray-200 bg-white text-[12px] text-gray-700 outline-none"
+            >
+
+              <option>All Accounts</option>
+
+              <option>Forex</option>
+
+              <option>Crypto</option>
+
+              <option>Indices</option>
+
+            </select>
+
+          </div>
+
+          {/* RIGHT */}
+
+          <div className="flex items-center gap-3">
+
+            <button
+              className="px-4 h-10 rounded-xl border border-gray-200 bg-white text-[12px] font-semibold text-gray-700 hover:bg-gray-50 transition-all"
+            >
+              Export
+            </button>
+
+            <button
+              onClick={() => setOpenTradeModal(true)}
+              className="px-4 h-10 rounded-xl bg-blue-600 text-white text-[12px] font-semibold hover:bg-blue-700 transition-all"
+            >
+              Add Trade
+            </button>
+
+            <button
+              onClick={handleLogout}
+              className="px-4 h-10 rounded-xl bg-red-500 text-white text-[12px] font-semibold hover:bg-red-600 transition-all"
+            >
+              Logout
+            </button>
 
           </div>
 
@@ -123,7 +161,13 @@ function DashboardHeader() {
 
       </div>
 
-    </div>
+      <TradeModal
+        open={openTradeModal}
+        onClose={() => setOpenTradeModal(false)}
+      />
+
+    </>
+
   )
 }
 

@@ -1,47 +1,30 @@
-// Import the functions you need from the SDKs you need
-
 import { initializeApp } from "firebase/app"
 
-import { getAuth }
-from "firebase/auth"
+import {
+  getAuth
+} from "firebase/auth"
 
-import { getFirestore }
-from "firebase/firestore"
-
-import { getStorage }
-from "firebase/storage"
+import {
+  getFirestore
+} from "firebase/firestore"
 
 const firebaseConfig = {
 
-  apiKey:
-    "AIzaSyCi3VCSrIHpZ1ZZqlCAfeSnkfLME8TWLnI",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
 
-  authDomain:
-    "trading-journal-pro-3e6ef.firebaseapp.com",
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
 
-  projectId:
-    "trading-journal-pro-3e6ef",
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
 
-  storageBucket:
-    "trading-journal-pro-3e6ef.appspot.com",
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
 
-  messagingSenderId:
-    "948643881451",
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
 
-  appId:
-    "1:948643881451:web:339ab02166bcb9a1ab79ae"
+  appId: import.meta.env.VITE_FIREBASE_APP_ID
 }
 
-const app =
-  initializeApp(firebaseConfig)
+const app = initializeApp(firebaseConfig)
 
-export const auth =
-  getAuth(app)
+export const auth = getAuth(app)
 
-export const db =
-  getFirestore(app)
-
-export const storage =
-  getStorage(app)
-
-export default app
+export const db = getFirestore(app)

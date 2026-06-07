@@ -272,3 +272,11 @@ body {
 
   background-attachment: fixed;
 }
+.dark {
+  background-color: #111827;
+  color: white;
+}
+
+.dark body {
+  background-color: #111827;
+}

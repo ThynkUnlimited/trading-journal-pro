@@ -1,53 +1,37 @@
 import {
-
   createContext,
   useContext,
   useEffect,
   useState
-
 } from "react"
 
 import {
-
   onAuthStateChanged
-
 } from "firebase/auth"
 
 import {
-
   auth
-
 } from "../firebase/firebase"
 
-const AuthContext =
-  createContext()
+const AuthContext = createContext()
 
-export function AuthProvider({
+export function AuthProvider({ children }) {
 
-  children
+  const [user, setUser] = useState(null)
 
-}) {
-
-  const [user, setUser] =
-    useState(null)
-
-  const [loading, setLoading] =
-    useState(true)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
 
-    const unsubscribe =
-      onAuthStateChanged(
+    const unsubscribe = onAuthStateChanged(
+      auth,
+      (currentUser) => {
 
-        auth,
+        setUser(currentUser)
 
-        (currentUser) => {
-
-          setUser(currentUser)
-
-          setLoading(false)
-        }
-      )
+        setLoading(false)
+      }
+    )
 
     return unsubscribe
 
@@ -56,7 +40,9 @@ export function AuthProvider({
   return (
 
     <AuthContext.Provider
-      value={{ user }}
+      value={{
+        user
+      }}
     >
 
       {!loading && children}
@@ -67,7 +53,5 @@ export function AuthProvider({
 
 export function useAuth() {
 
-  return useContext(
-    AuthContext
-  )
+  return useContext(AuthContext)
 }

@@ -1,49 +1,55 @@
 import {
-
+  BrowserRouter,
   Routes,
   Route,
   Navigate
-
 } from "react-router-dom"
 
-import Dashboard
-from "./pages/Dashboard"
+import Dashboard from "./pages/Dashboard"
+import Reports from "./pages/Reports"
+import Settings from "./pages/Settings"
+import Auth from "./pages/Auth"
 
-import Analytics
-from "./pages/Analytics"
-
-import Trades
-from "./pages/Trades"
+import { useAuth } from "./context/AuthContext"
 
 function App() {
 
+  const { user } = useAuth()
+
+  if (!user) {
+    return <Auth />
+  }
+
   return (
 
-    <Routes>
+    <BrowserRouter>
 
-      <Route
-        path="/"
-        element={<Dashboard />}
-      />
+      <Routes>
 
-      <Route
-        path="/analytics"
-        element={<Analytics />}
-      />
+        <Route
+          path="/"
+          element={<Navigate to="/dashboard" />}
+        />
 
-      <Route
-        path="/journal"
-        element={<Trades />}
-      />
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
+        />
 
-      <Route
-        path="*"
-        element={
-          <Navigate to="/" />
-        }
-      />
+        <Route
+          path="/reports"
+          element={<Reports />}
+        />
 
-    </Routes>
+        <Route
+          path="/settings"
+          element={<Settings />}
+        />
+
+      </Routes>
+
+    </BrowserRouter>
+
   )
 }
 
