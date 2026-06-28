@@ -1,14 +1,12 @@
 import { useEffect, useState } from "react";
-
 import { signOut } from "firebase/auth";
-
 import {
   CalendarDays,
   Clock3,
+  Wallet,
 } from "lucide-react";
 
 import { auth } from "../../firebase/firebase";
-
 import TradeModal from "./TradeModal";
 
 function DashboardHeader() {
@@ -36,87 +34,106 @@ function DashboardHeader() {
     }
   };
 
-  const currentTime = time.toLocaleTimeString();
-
   return (
     <>
-      <div className="bg-white border border-gray-200 rounded-2xl px-4 sm:px-6 py-5">
-        <div className="flex flex-col gap-4">
-          {/* HEADER */}
+      <div className="bg-white border border-gray-200 rounded-xl px-5 py-4 shadow-sm">
+
+        {/* TOP ROW */}
+
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+
           <div>
-            <h1 className="text-xl sm:text-[22px] font-bold text-gray-900">
+
+            <h1 className="text-xl font-bold text-gray-900">
               Trading Dashboard
             </h1>
 
-            <p className="text-[13px] text-gray-500 mt-1">
-              Monitor your trading performance and analytics
+            <p className="text-xs text-gray-500 mt-1">
+              Monitor performance, review trades and improve discipline.
             </p>
+
           </div>
 
-          {/* CONTROLS */}
-          <div className="flex flex-col lg:flex-row gap-4 lg:items-center lg:justify-between">
-            {/* LEFT CONTROLS */}
-            <div className="flex flex-wrap items-center gap-3">
-              {/* CALENDAR */}
-              <div className="flex items-center gap-2 h-10 px-3 rounded-xl border border-gray-200 bg-white">
-                <CalendarDays
-                  size={15}
-                  className="text-gray-500"
-                />
+          <div className="flex items-center gap-2 flex-wrap">
 
-                <input
-                  type="date"
-                  value={selectedDate}
-                  onChange={(e) => setSelectedDate(e.target.value)}
-                  className="text-[12px] text-gray-700 outline-none cursor-pointer bg-white w-[120px] sm:w-[140px]"
-                />
-              </div>
+            {/* DATE */}
 
-              {/* CLOCK */}
-              <div className="flex items-center gap-2 px-4 h-10 rounded-xl border border-gray-200 bg-gray-50">
-                <Clock3
-                  size={15}
-                  className="text-gray-500"
-                />
+            <div className="flex items-center gap-2 h-9 px-3 rounded-lg border border-gray-200 bg-white">
 
-                <span className="text-[12px] font-medium text-gray-700">
-                  {currentTime}
-                </span>
-              </div>
+              <CalendarDays
+                size={14}
+                className="text-gray-400"
+              />
 
-              {/* FILTER */}
-              <select className="h-10 px-3 sm:px-4 rounded-xl border border-gray-200 bg-white text-[12px] text-gray-700 outline-none">
-                <option>All Accounts</option>
-                <option>Forex</option>
-                <option>Crypto</option>
-                <option>Indices</option>
-              </select>
+              <input
+                type="date"
+                value={selectedDate}
+                onChange={(e) => setSelectedDate(e.target.value)}
+                className="text-xs text-gray-700 outline-none bg-transparent"
+              />
+
             </div>
 
-            {/* ACTION BUTTONS */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 w-full lg:w-auto">
-              <button
-                className="px-4 h-10 rounded-xl border border-gray-200 bg-white text-[12px] font-semibold text-gray-700 hover:bg-gray-50 transition-all"
-              >
-                Export
-              </button>
+            {/* CLOCK */}
 
-              <button
-                onClick={() => setOpenTradeModal(true)}
-                className="px-4 h-10 rounded-xl bg-blue-600 text-white text-[12px] font-semibold hover:bg-blue-700 transition-all"
-              >
-                Add Trade
-              </button>
+            <div className="flex items-center gap-2 h-9 px-3 rounded-lg bg-gray-50 border border-gray-200">
 
-              <button
-                onClick={handleLogout}
-                className="px-4 h-10 rounded-xl bg-red-500 text-white text-[12px] font-semibold hover:bg-red-600 transition-all"
-              >
-                Logout
-              </button>
+              <Clock3
+                size={14}
+                className="text-gray-400"
+              />
+
+              <span className="text-xs font-medium text-gray-700">
+                {time.toLocaleTimeString()}
+              </span>
+
             </div>
+
+            {/* ACCOUNT */}
+
+            <div className="flex items-center gap-2 h-9 px-3 rounded-lg bg-blue-50 border border-blue-100">
+
+              <Wallet
+                size={14}
+                className="text-blue-600"
+              />
+
+              <span className="text-xs font-medium text-blue-700">
+                All Accounts
+              </span>
+
+            </div>
+
           </div>
+
         </div>
+
+        {/* ACTION BUTTONS */}
+
+        <div className="flex flex-wrap justify-end gap-2 mt-4">
+
+          <button
+            className="px-4 h-9 rounded-lg border border-gray-200 bg-white text-xs font-semibold text-gray-700 hover:bg-gray-50 transition"
+          >
+            Export
+          </button>
+
+          <button
+            onClick={() => setOpenTradeModal(true)}
+            className="px-4 h-9 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition"
+          >
+            + Add Trade
+          </button>
+
+          <button
+            onClick={handleLogout}
+            className="px-4 h-9 rounded-lg bg-red-500 text-white text-xs font-semibold hover:bg-red-600 transition"
+          >
+            Logout
+          </button>
+
+        </div>
+
       </div>
 
       <TradeModal

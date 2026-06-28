@@ -1,5 +1,6 @@
-function MonthlyPerformance({ trades = [] }) {
+import { CalendarDays, Trophy } from "lucide-react";
 
+function MonthlyPerformance({ trades = [] }) {
   const months = [
     "Jan",
     "Feb",
@@ -12,133 +13,128 @@ function MonthlyPerformance({ trades = [] }) {
     "Sep",
     "Oct",
     "Nov",
-    "Dec"
-  ]
+    "Dec",
+  ];
 
-  const monthlyTotals = {}
+  const monthlyTotals = {};
 
-  months.forEach((month) => {
-    monthlyTotals[month] = 0
-  })
+  months.forEach((m) => {
+    monthlyTotals[m] = 0;
+  });
 
   trades.forEach((trade) => {
+    const date = trade.createdAt?.toDate?.();
 
-    const date = trade.createdAt?.toDate?.()
+    if (!date) return;
 
-    if (!date) return
-
-    const month = date.toLocaleString(
-      "en-US",
-      { month: "short" }
-    )
+    const month = date.toLocaleString("en-US", {
+      month: "short",
+    });
 
     const pnl = Number(
       String(trade.pnl || 0)
         .replace("$", "")
         .replace(",", "")
-    )
+    );
 
-    monthlyTotals[month] += pnl
-  })
+    monthlyTotals[month] += pnl;
+  });
 
-  const totalPnL = Object.values(monthlyTotals)
-    .reduce((sum, value) => sum + value, 0)
+  const totalPnL = Object.values(monthlyTotals).reduce(
+    (sum, value) => sum + value,
+    0
+  );
+
+  const bestMonth =
+    Object.entries(monthlyTotals).sort((a, b) => b[1] - a[1])[0] || [];
 
   return (
+    <div className="bg-white border border-gray-200 rounded-xl p-4 h-[360px] flex flex-col">
+      {/* Header */}
 
-    <div className="bg-white border border-gray-200 rounded-2xl p-4 h-full">
+      <div className="flex items-center justify-between mb-4">
+        <div>
+          <h3 className="text-base font-semibold text-gray-900">
+            Monthly Performance
+          </h3>
 
-      {/* HEADER */}
+          <p className="text-xs text-gray-500">
+            Trading results by month
+          </p>
+        </div>
 
-      <div className="mb-4">
-
-        <h3 className="text-[14px] font-semibold text-gray-900">
-          Monthly Performance
-        </h3>
-
-        <p className="text-[11px] text-gray-500 mt-1">
-          Balance sheet overview
-        </p>
-
+        <CalendarDays
+          size={18}
+          className="text-blue-600"
+        />
       </div>
 
-      {/* TOP MONTH LABELS */}
+      {/* Months */}
 
-      <div className="grid grid-cols-12 gap-1 mb-2">
-
-        {months.map((month) => (
-
-          <div
-            key={month}
-            className="text-center text-[10px] font-semibold text-gray-500"
-          >
-            {month}
-          </div>
-
-        ))}
-
-      </div>
-
-      {/* PERFORMANCE BOXES */}
-
-      <div className="grid grid-cols-12 gap-1">
-
+      <div className="flex-1 space-y-2 overflow-y-auto pr-1">
         {months.map((month) => {
-
-          const value = monthlyTotals[month]
-
-          let bgColor = "bg-gray-100"
-
-          if (value > 0) {
-            bgColor = "bg-green-500"
-          }
-
-          if (value < 0) {
-            bgColor = "bg-red-500"
-          }
+          const value = monthlyTotals[month];
 
           return (
-
             <div
               key={month}
-              className={`h-10 rounded-md flex items-center justify-center text-[10px] font-semibold text-white ${bgColor}`}
+              className="flex items-center justify-between border-b border-gray-100 pb-2"
             >
+              <span className="font-medium text-gray-700">
+                {month}
+              </span>
 
-              {value !== 0
-                ? `$${Math.abs(value).toFixed(0)}`
-                : "-"
-              }
-
+              <span
+                className={`font-semibold ${
+                  value > 0
+                    ? "text-green-600"
+                    : value < 0
+                    ? "text-red-600"
+                    : "text-gray-400"
+                }`}
+              >
+                {value === 0
+                  ? "-"
+                  : `${value > 0 ? "+" : ""}$${value.toFixed(2)}`}
+              </span>
             </div>
-
-          )
+          );
         })}
-
       </div>
 
-      {/* TOTAL PNL */}
+      {/* Footer */}
 
-      <div className="mt-5 pt-3 border-t border-gray-200 flex items-center justify-between">
+      <div className="mt-4 pt-3 border-t border-gray-200 flex justify-between items-center">
+        <div>
+          <p className="text-xs text-gray-500">
+            Total P&L
+          </p>
 
-        <span className="text-[11px] font-semibold text-gray-600">
-          Total Accumulated P&L
-        </span>
+          <p
+            className={`font-bold ${
+              totalPnL >= 0
+                ? "text-green-600"
+                : "text-red-600"
+            }`}
+          >
+            ${totalPnL.toFixed(2)}
+          </p>
+        </div>
 
-        <span
-          className={`text-[12px] font-bold ${
-            totalPnL >= 0
-              ? "text-green-600"
-              : "text-red-600"
-          }`}
-        >
-          ${totalPnL.toFixed(2)}
-        </span>
+        <div className="text-right">
+          <p className="text-xs text-gray-500 flex items-center justify-end gap-1">
+            <Trophy size={14} />
+            Best Month
+          </p>
 
+          <p className="font-semibold text-blue-600">
+            {bestMonth[0]} ({bestMonth[1] > 0 ? "+" : ""}$
+            {Number(bestMonth[1] || 0).toFixed(2)})
+          </p>
+        </div>
       </div>
-
     </div>
-
-  )
+  );
 }
 
-export default MonthlyPerformance
+export default MonthlyPerformance;
